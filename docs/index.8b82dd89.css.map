@@ -1,0 +1,1 @@
+{"mappings":"ACAA,sCAKA","sources":["index.8b82dd89.css","main.css"],"sourcesContent":["body {\n  color: #fff;\n  background-color: #000;\n}\n\ncanvas {\n  height: 0;\n}\n\n/*# sourceMappingURL=index.8b82dd89.css.map */\n","body {\n    background-color: black;\n    color: white;\n}\n\ncanvas {\n    height: 0px;\n}"],"names":[],"version":3,"file":"index.8b82dd89.css.map"}

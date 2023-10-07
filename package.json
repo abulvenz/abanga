@@ -1,0 +1,32 @@
+{
+  "name": "abanga",
+  "version": "1.0.0",
+  "description": "Some game with geometry",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "rm -rf docs && parcel build index.html --dist-dir docs --public-url https://abulvenz.github.io/abanga",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/abulvenz/abanga.git"
+  },
+  "keywords": [
+    "geometry",
+    "stones",
+    "solver"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abulvenz/abanga/issues"
+  },
+  "homepage": "https://github.com/abulvenz/abanga#readme",
+  "devDependencies": {
+    "parcel": "^2.9.3"
+  },
+  "dependencies": {
+    "mithril": "^2.2.2",
+    "tagl-mithril": "^1.2.2"
+  }
+}
