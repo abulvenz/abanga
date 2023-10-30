@@ -1,300 +1,51 @@
 import m from 'mithril';
-import { table, tr, td, a, button, h1 } from './tags';
-import { pre } from 'tagl-mithril';
+import { pre, table, tr, td, a, button, h1, div, input } from './tags';
 
-const colors = Object.freeze({
-    RED: 'RED',
-    YELLOW: 'YELLOW',
-    BLUE: 'BLUE',
-    GREEN: 'GREEN'
-});
-
-const pieces = [
-    {
-        id: 1,
-        num: 1,
-        color: colors.YELLOW,
-        coords: [
-            [
-                ' #',
-                '##',
-                ' #'
-            ],
-            [
-                ' #',
-                '  ',
-                '  '
-            ]
-        ]
-    },
-    {
-        id: 2,
-        num: 2,
-        color: colors.YELLOW,
-        coords: [
-            [
-                '##',
-                ' #',
-                ' #'
-            ],
-            [
-                '  ',
-                '  ',
-                ' #'
-            ]
-        ]
-    },
-    {
-        id: 3,
-        num: 3,
-        color: colors.YELLOW,
-        coords: [
-            [
-                '##',
-                '# ',
-            ],
-            [
-                ' #',
-                '  ',
-            ]
-        ]
-    },
-    {
-        id: 4,
-        num: 4,
-        color: colors.YELLOW,
-        coords: [
-            [
-                '##',
-                ' #',
-                '##'
-            ],
-        ]
-    },
-
-
-    {
-        id: 5,
-        num: 1,
-        color: colors.BLUE,
-        coords: [
-            [
-                ' #',
-                ' #',
-                '##'
-            ],
-            [
-                '  ',
-                '  ',
-                '# '
-            ]
-        ]
-    },
-    {
-        id: 6,
-        num: 2,
-        color: colors.BLUE,
-        coords: [
-            [
-                '# ',
-                '##',
-                ' #'
-            ],
-            [
-                '# ',
-                '  ',
-                '  '
-            ]
-        ]
-    },
-    {
-        id: 7,
-        num: 3,
-        color: colors.BLUE,
-        coords: [
-            [
-                ' #',
-                '##',
-                '##'
-            ],
-        ]
-    },
-    {
-        id: 8,
-        num: 4,
-        color: colors.BLUE,
-        coords: [
-            [
-                ' #',
-                '##'
-            ],
-        ]
-    },
-
-
-    {
-        id: 9,
-        num: 1,
-        color: colors.RED,
-        coords: [
-            [
-                '##',
-                '##',
-            ],
-            [
-                ' #',
-                '  ',
-            ]
-        ]
-    },
-    {
-        id: 10,
-        num: 2,
-        color: colors.RED,
-        coords: [
-            [
-                '##',
-                ' #',
-            ],
-            [
-                '# ',
-                '  ',
-            ]
-        ]
-    },
-    {
-        id: 11,
-        num: 3,
-        color: colors.RED,
-        coords: [
-            [
-                ' #',
-                ' #',
-                '##',
-            ],
-            [
-                ' #',
-                '  ',
-                '  ',
-            ]
-        ]
-    },
-    {
-        id: 12,
-        num: 4,
-        color: colors.RED,
-        coords: [
-            [
-                '# ',
-                '##',
-                ' #'
-            ],
-        ]
-    },
-
-    {
-        id: 13,
-        num: 1,
-        color: colors.GREEN,
-        coords: [
-            [
-                ' #',
-                '##',
-                '# '
-            ],
-            [
-                ' #',
-                '  ',
-                '  '
-            ]
-        ]
-    },
-    {
-        id: 14,
-        num: 2,
-        color: colors.GREEN,
-        coords: [
-            [
-                '##',
-                ' #',
-                ' #'
-            ],
-            [
-                '# ',
-                '  ',
-                '  '
-            ]
-        ]
-    },
-    {
-        id: 15,
-        num: 3,
-        color: colors.GREEN,
-        coords: [
-            [
-                ' #',
-                '##',
-                ' #',
-            ],
-        ]
-    },
-    {
-        id: 16,
-        num: 4,
-        color: colors.GREEN,
-        coords: [
-            [
-                ' #',
-                ' #',
-                '##'
-            ],
-        ]
-    },
-
-];
-
+import pieces from './pieces';
 
 const cards = [
     {
         id: 'A19',
-        1: {
-            coords: [
-                '  ##',
-                '####',
-                '#   '
-            ],
-            combi: [
-                {
-                    dice: [1, 2],
-                    pieces: [10, 13, 9]
-                },
-                {
-                    dice: [3, 4],
-                    pieces: [5, 16, 9]
-                }
-            ]
-        },
-        2: {
-            coords: [
-                '####',
-                ' ## ',
-                '  # '
-            ],
-            combi: [
-                {
-                    dice: [5, 6, 7],
-                    pieces: [9, 16, 2]
-                },
-                {
-                    dice: [8, 9, 10],
-                    pieces: [13, 10, 9]
-                }
-            ]
-        }
+        sets: [
+            {
+                coords: [
+                    '  ##',
+                    '####',
+                    '#   '
+                ],
+                combi: [
+                    {
+                        dice: [1, 2],
+                        pieces: [10, 13, 9]
+                    },
+                    {
+                        dice: [3, 4],
+                        pieces: [5, 16, 9]
+                    }
+                ]
+            },
+            {
+                coords: [
+                    '####',
+                    ' ## ',
+                    '  # '
+                ],
+                combi: [
+                    {
+                        dice: [5, 6, 7],
+                        pieces: [9, 16, 2]
+                    },
+                    {
+                        dice: [8, 9, 10],
+                        pieces: [13, 10, 9]
+                    }
+                ]
+            }
+        ]
     },
     {
         id: 'B19',
-        1: {
+        sets: [{
             coords: [
                 '## #',
                 ' ###',
@@ -329,7 +80,7 @@ const cards = [
                 }
             ]
         },
-        2: {
+        {
             coords: [
                 '### ',
                 '####',
@@ -365,11 +116,15 @@ const cards = [
 
             ]
         }
+        ]
     }
-]
+];
+
+const dice = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 const state = {
-    card: cards[0]
+    card: cards[0],
+    dice: 1
 };
 
 const use = (v, f) => f(v);
@@ -379,13 +134,154 @@ const previous = (element, arr) => use(arr.indexOf(element) - 1, idx =>
 
 const next = (element, arr) => use(arr.indexOf(element) + 1, idx => idx >= arr.length ? arr[0] : arr[idx])
 
+const contains = (arr, element) => arr.indexOf(element) >= 0;
+
+const selectSet = (card, dice) => card.sets.find(
+    set => set.combi.some(combi => contains(combi.dice, dice)));
+
+const selectCombi = (set, dice) =>
+    set.combi.find(combi => contains(combi.dice, dice));
+
+const findPiece = num => pieces.find(piece => piece.id === num)
+
+const flatMap = arr => arr.reduce((acc, v) => acc.concat(v), []);
+
+console.log(flatMap([1, [2, 3]]))
+
+const pieceToCoords = piece => flatMap(flatMap(
+    piece.coords.map(
+        (floor, z) => floor.map(
+            (rowString, x) => rowString.split('').map(
+                (c, y) => '#' === c ? ({ x, y, z }) : undefined
+            )
+        )
+    ))
+).filter(e => !!e);
+
+const mapToCoords = (map = ["##", "##"]) => flatMap(flatMap(
+    map.map(
+        (r, ri) => r.split('').map((c, ci) => c === '#' ? ({ x: ri, y: ci }) : undefined))
+
+).filter(e => !!e).map(c => [0, 1].map(z => ({ ...c, z }))))
+
+
+console.log(mapToCoords())
+
+
+console.log(pieceToCoords(pieces[0]))
+
+
+const cubeC = vnode => ({
+    view: vnode => div.cube(
+        div.group(
+            {
+                style: `
+            --transform:rotate3d(1,1,1,${vnode.attrs.angle || 0}deg);
+        ` },
+            div[vnode.attrs.color || 'gray'].face.front({ style: `--size:${vnode.attrs.size}` }, 1),
+            div[vnode.attrs.color || 'gray'].face.back({ style: `--size:${vnode.attrs.size}` }, 2),
+            div[vnode.attrs.color || 'gray'].face.left({ style: `--size:${vnode.attrs.size}` }, 3),
+            div[vnode.attrs.color || 'gray'].face.right({ style: `--size:${vnode.attrs.size}` }, 4),
+            div[vnode.attrs.color || 'gray'].face.top({ style: `--size:${vnode.attrs.size}` }, 5),
+            div[vnode.attrs.color || 'gray'].face.bottom({ style: `--size:${vnode.attrs.size}` }, 6)
+        )
+    )
+});
+
+
+const containerC = vnode => ({
+    view: vnode => div.container({ style: `--size:${vnode.attrs.size};` },
+        div.innerContainer({
+            style: `--transform:rotate3d(1, 1, 0, ${vnode.attrs.angle}deg);`
+        },
+            vnode.children))
+});
+
+const cubicalC = vnode => ({
+    //    
+    view: vnode =>
+        div.cube({ style: `--size:${vnode.attrs.size};--transform:${vnode.attrs.transform}` },
+            [
+                div[vnode.attrs.color].face.top(vnode.attrs.title),
+                div[vnode.attrs.color].face.bottom(vnode.attrs.title),
+                div[vnode.attrs.color].face.left(vnode.attrs.title),
+                div[vnode.attrs.color].face.right(vnode.attrs.title),
+                div[vnode.attrs.color].face.front(vnode.attrs.title),
+                div[vnode.attrs.color].face.back(vnode.attrs.title)
+            ]
+
+        )
+});
+
+
+let angle = 330;
+
 m.mount(document.getElementById("controls"), {
     view: vnode => [
         h1('AB AN GA'),
         button({ onclick: e => state.card = previous(state.card, cards) }, '<'),
-        cards.indexOf(state.card),
+        state.card.id,
         button({ onclick: e => state.card = next(state.card, cards) }, '>'),
-        table()
+        button({ onclick: e => state.dice = previous(state.dice, dice) }, '-'),
+        state.dice,
+        button({ onclick: e => state.dice = next(state.dice, dice) }, '+'),
+        use(state.card, card =>
+            use(selectSet(card, state.dice), set => [
+                use(selectCombi(set, state.dice), combi =>
+                    [
+                        pre("card:", JSON.stringify(card), '\n',
+                            JSON.stringify(combi, null, 2)),
+
+                        combi.pieces.map((pn, i) => use(findPiece(pn), piece => [
+                            pre("PEACE", JSON.stringify(piece)),
+                            //    pre(JSON.stringify(pieceToCoords(findPiece(pn)))),
+                            m(containerC, { size: '300px', angle },
+                                //  m(cubicalC, { angle, size: '10px' }),
+                                pieceToCoords(piece).map(c =>
+                                    m(cubicalC, {
+                                        color: piece.color.toLowerCase(),
+                                        title: JSON.stringify(piece.id),
+                                        angle, size: '100px', transform: `
+                                        translateX(${c.x * 100 + 10}px)
+                                        translateY(${c.y * 100 + 10}px)
+                                        translateZ(${c.z * 100 + 10}px)
+                                    `
+                                    })
+                                )
+                            )
+                        ]))
+                    ]
+                ),
+
+
+                m(containerC, { size: '300px', angle },
+                    //  m(cubicalC, { angle, size: '10px' }),
+                    mapToCoords(set.coords).map(e => console.log(e) || e).map(c =>
+                        m(cubicalC, {
+                            color: "gray",
+                            title: "?",
+                            angle, size: '100px', transform: `
+                        translateX(${c.x * 100 + 10}px)
+                        translateY(${c.y * 100 + 10}px)
+                        translateZ(${c.z * 100 + 10}px)
+                    `
+                        })
+                    )
+                ),
+
+                div.field(
+                    set.coords ?
+                        set.coords.map(row => [
+                            div.row(
+                                row.split("").map(
+                                    c => c === '#' ? div.box.filled() : div.box()
+                                )
+                            )
+                        ]) : "NoCoords"
+                )
+            ])
+        ),
+        input({ type: 'range', value: angle, max: 360, min: 0, onchange: e => console.log("U", angle = +e.target.value) }),
     ]
 })
 

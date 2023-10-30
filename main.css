@@ -6,3 +6,110 @@ body {
 canvas {
     height: 0px;
 }
+
+.gray {
+    background-color: rgba(128, 128, 128, 0.759);
+}
+
+.red {
+    background-color: red;
+}
+
+.green {
+    background-color: green;
+}
+
+.blue {
+    background-color: blue;
+}
+
+.yellow {
+    background-color: yellow;
+}
+
+.container {
+    width: var(--size);
+    height: var(--size);
+    perspective: 500px;
+    margin: 100px;
+    border: 1px solid saddlebrown
+}
+
+.inner-container {
+    transform: var(--transform);
+    transform-style: preserve-3d;
+}
+
+.cube {
+    transform: var(--transform);
+    position: absolute;
+    width: var(--size);
+    height: var(--size);
+    transform-style: preserve-3d;
+}
+
+
+.face {
+    backface-visibility: hidden;
+    width: var(--size);
+    height: var(--size);
+    border: 0px solid black;
+    position: absolute;
+    color: black;
+    opacity: 1.5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+    font-size: 3.5em;
+    border-radius: calc(var(--size)*0.02);
+}
+
+.front {
+    transform: translateZ(calc(var(--size)/2));
+    filter: brightness(100%);
+}
+
+.back {
+    transform: translateZ(calc(-1*var(--size)/2)) rotateY(180deg);
+    filter: brightness(10%);
+}
+
+
+.left {
+    transform: translateX(calc(-1*var(--size)/2)) rotateY(-90deg);
+    filter: brightness(10%);
+}
+
+.right {
+    transform: translateX(calc(var(--size)/2)) rotateY(90deg);
+    filter: brightness(20%);
+}
+
+.top {
+    transform: translateY(calc(-1*var(--size)/2)) rotateX(90deg);
+    filter: brightness(50%);
+}
+
+.bottom {
+    transform: translateY(calc(var(--size)/2)) rotateX(-90deg);
+}
+
+.field {
+    display: grid;
+    grid-template-rows: repeat(5, 10vw);
+    grid-template-columns: repeat(5, 10vw);
+}
+
+.box {
+    background-color: black;
+    width: 10vw;
+    height: 10vw;
+    border-radius: 1vw;
+    border: 1px solid darkblue;
+}
+
+.filled {
+    background-color: lightblue;
+
+}
