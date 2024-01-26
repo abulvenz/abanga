@@ -1,7 +1,7 @@
 import m from "mithril";
 import { pre, table, tr, td, a, button, h1, div, input } from "./tags";
 
-import pieces from "./pieces";
+import { pieces } from "./pieces";
 
 const cards = [
   // {
