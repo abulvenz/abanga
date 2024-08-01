@@ -21,7 +21,7 @@ export const pieces = [
   {
     id: 3,
     num: 3,
-    color: colors.YELLOW,
+    color: colors.MIDDLEBROWN,
     coords: [
       ["##", "# "],
       [" #", "  "],
@@ -61,23 +61,23 @@ export const pieces = [
   {
     id: 8,
     num: 4,
-    color: colors.BLUE,
+    color: colors.BLANCHEDALMOND,
     coords: [[" #", "##"]],
   },
 
   {
     id: 9,
     num: 1,
-    color: colors.RED,
+    color: colors.PURPLE,
     coords: [
-      ["##", "##"],
+      ["##", " #"],
       [" #", "  "],
     ],
   },
   {
     id: 10,
     num: 2,
-    color: colors.RED,
+    color: colors.BLANCHEDALMOND,
     coords: [
       ["##", " #"],
       ["# ", "  "],
@@ -95,7 +95,7 @@ export const pieces = [
   {
     id: 12,
     num: 4,
-    color: colors.RED,
+    color: colors.REDBROWN,
     coords: [["# ", "##", " #"]],
   },
 
@@ -120,13 +120,13 @@ export const pieces = [
   {
     id: 15,
     num: 3,
-    color: colors.GREEN,
+    color: colors.MIDDLEBROWN,
     coords: [[" #", "##", " #"]],
   },
   {
     id: 16,
     num: 4,
-    color: colors.GREEN,
+    color: colors.DARKBROWN,
     coords: [[" #", " #", "##"]],
   },
 ];

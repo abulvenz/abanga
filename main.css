@@ -8,7 +8,11 @@ canvas {
 }
 
 .gray {
-    background-color: rgba(128, 128, 128, 0.759);
+    background-color: rgba(128, 128, 128, 0.259);
+}
+
+.pink {
+    background-color: pink;
 }
 
 .red {
@@ -23,8 +27,32 @@ canvas {
     background-color: blue;
 }
 
+
 .yellow {
     background-color: yellow;
+}
+.middlebrown {
+    background-color: rgb(91, 42, 7);
+}
+
+.redbrown {
+    background-color: saddlebrown;
+}
+
+.blanchedalmond {
+    background-color: blanchedalmond;
+}
+
+.purple {
+    background-color: rgb(128, 0, 55);
+}
+
+.sandybrown {
+    background-color: sandybrown;
+}
+
+.darkbrown {
+    background-color: rgb(47, 30, 19);
 }
 
 .container {
