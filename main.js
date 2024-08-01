@@ -3,6 +3,8 @@ import { pre, table, tr, td, a, button, h1, div, input } from "./tags";
 
 import { pieces } from "./pieces";
 
+const { min, pow, max, trunc } = Math;
+
 const range = (n) => Array.from({ length: n }, (_, i) => i);
 
 const cards = [
@@ -95,9 +97,9 @@ const rotate_Z = (vec) => {
 };
 
 const normalize_coords = (coords) => {
-  const min_x = Math.min(...coords.map((c) => c.x));
-  const min_y = Math.min(...coords.map((c) => c.y));
-  const min_z = Math.min(...coords.map((c) => c.z));
+  const min_x = min(...coords.map((c) => c.x));
+  const min_y = min(...coords.map((c) => c.y));
+  const min_z = min(...coords.map((c) => c.z));
 
   return coords.map((c) => ({
     x: c.x - min_x,
@@ -109,8 +111,8 @@ const normalize_coords = (coords) => {
 const shift_coords = (coords, shift, factor = 1) => {
   return coords.map((c) => ({
     x: c.x + shift.x * factor,
-    y: c.y + shift.y* factor,
-    z: c.z + shift.z* factor,
+    y: c.y + shift.y * factor,
+    z: c.z + shift.z * factor,
   }));
 };
 
@@ -124,47 +126,6 @@ const mapToCoords = (map = ["###", "###", "###"]) =>
       .filter((e) => !!e)
       .map((c) => [0, 1, 2].map((z) => ({ ...c, z })))
   );
-
-console.log(sort_coords(mapToCoords()));
-
-console.log(pieceToCoords(pieces[0]));
-
-const cubeC = (vnode) => ({
-  view: (vnode) =>
-    div.cube(
-      div.group(
-        {
-          style: `
-            --transform:rotate3d(1,1,1,${vnode.attrs.angle || 0}deg);
-        `,
-        },
-        div[vnode.attrs.color || "gray"].face.front(
-          { style: `--size:${vnode.attrs.size}` },
-          1
-        ),
-        div[vnode.attrs.color || "gray"].face.back(
-          { style: `--size:${vnode.attrs.size}` },
-          2
-        ),
-        div[vnode.attrs.color || "gray"].face.left(
-          { style: `--size:${vnode.attrs.size}` },
-          3
-        ),
-        div[vnode.attrs.color || "gray"].face.right(
-          { style: `--size:${vnode.attrs.size}` },
-          4
-        ),
-        div[vnode.attrs.color || "gray"].face.top(
-          { style: `--size:${vnode.attrs.size}` },
-          5
-        ),
-        div[vnode.attrs.color || "gray"].face.bottom(
-          { style: `--size:${vnode.attrs.size}` },
-          6
-        )
-      )
-    ),
-});
 
 const containerC = (vnode) => ({
   view: (vnode) =>
@@ -180,7 +141,6 @@ const containerC = (vnode) => ({
 });
 
 const cubicalC = (vnode) => ({
-  //
   view: (vnode) =>
     div.cube(
       {
@@ -211,19 +171,70 @@ const rotations = [
   (v) => rotate_Y(rotate_Z(v)),
 ];
 
+const idx_of_coords = (coords) => coords.x + coords.y * 3 + coords.z * 9;
+
+const numberify = (coords) =>
+  coords.reduce((acc, v) => acc + pow(2, idx_of_coords(v)), 0);
+
+const number_to_binary_string = (n) => n.toString(2).padStart(27, "0");
+
+const idx_to_coords = (idx) => ({
+  x: idx % 3,
+  y: trunc(idx / 9),
+  z: trunc(idx / 3) % 3,
+});
+
+const number_to_coords = (num) =>
+  range(27)
+    .map((i) => (pow(2, i) & num ? i : undefined))
+    .filter((e) => e !== undefined)
+    .map(idx_to_coords);
+
+console.log(`number_to_coords: ${JSON.stringify(number_to_coords(25))}`);
+
+const boundingBox = (coords) =>
+  coords.reduce(
+    (acc, c) => {
+      acc.min.x = min(acc.min.x, c.x);
+      acc.min.y = min(acc.min.y, c.y);
+      acc.min.z = min(acc.min.z, c.z);
+      acc.max.x = max(acc.max.x, c.x);
+      acc.max.y = max(acc.max.y, c.y);
+      acc.max.z = max(acc.max.z, c.z);
+      return acc;
+    },
+    { min: { x: 100, y: 100, z: 100 }, max: { x: 0, y: 0, z: 0 } }
+  );
+
+const piece_to_numbers = (coords) => {
+  const unique_coords = new Set();
+
+  rotations.forEach((rotation) => {
+    const rotated_coords = normalize_coords(coords.map(rotation));
+    const bounding_box = boundingBox(rotated_coords);
+
+    for (x in range(3 - bounding_box.max.x)) {
+      for (y in range(3 - bounding_box.max.y)) {
+        for (z in range(3 - bounding_box.max.z)) {
+          const shift = { x, y, z };
+          const shifted_coords = shift_coords(rotated_coords, shift);
+          const num = numberify(sort_coords(shifted_coords));
+          if (num > pow(2, 27)) throw Error(`mömömö ${num}, ${pow(2, 27)}`);
+          unique_coords.add(num);
+        }
+      }
+    }
+  });
+  return Array.from(unique_coords).map((c) => c);
+};
+
 const create_unique_coords_by_piece_index = (combi) => {
   const pieces = combi.pieces.map((pn) => findPiece(pn));
 
-  return pieces.map((piece, piece_index) => {
+  return pieces.map((piece) => {
     const coords = pieceToCoords(piece);
-    const unique_coords = new Set();
 
-    rotations.forEach((rotation) => {
-      const rotated_coords = normalize_coords(coords.map(rotation));
-      unique_coords.add(JSON.stringify(sort_coords(rotated_coords)));
-    });
-
-    return Array.from(unique_coords).map((c) => JSON.parse(c));
+    return piece_to_numbers(coords);
   });
 };
 const solve = () => {
@@ -239,89 +250,32 @@ const solve = () => {
 
   const solutions = [];
 
-  const unique_coords_by_piece_index =
-    create_unique_coords_by_piece_index(combi);
+  const coords_by_piece_index = create_unique_coords_by_piece_index(combi);
 
-  // Now we have all unique coordinates for each piece. We can now try to place
-  // them such that the target_coords are exactly covered.
-  const target_coords_sorted = sort_coords(target_coords);
-
-  // One solution is an array with the same length as pieces, where each element
-  // gives us the current place position of the piece in that solution and an index of
-  // the unique_coords_by_piece_index array.
-
-  // I.e. a solution is an array of objects { rot_idx, coords } where rot_idx is the index of the
-  // unique_coords_by_piece_index array and coords is the shift of the piece.
-
-  // The algorithm is recursive and tries to place the pieces in the solution array.
-  // If the solution is valid, it is added to the solutions array.
-  // A solution is not valid, when the place cannot be added such that it does not collide with
-  // another piece that has already been placed.
-
-  const target_coords_set = new Set();
-  target_coords_sorted.forEach((c) => target_coords_set.add(JSON.stringify(c)));
-
-  const isValid = (solution) => {
-    const solution_coords = sort_coords(
-      flatMap(
-        solution.map(({ coords, rot_idx }, idx) => {
-          const unique_coords = unique_coords_by_piece_index[idx][rot_idx];
-          return shift_coords(unique_coords, coords);
-        })
-      )
-    );
-
-    const solution_coords_set = new Set();
-    //    console.log("isValid", solution, solution_coords);
-
-    // Check if all coordinates are unique in the solution
-    // and if they are within the target_coords. If not return false as quickly as possible.
-    for (let i = 0; i < solution_coords.length; i++) {
-      const c = solution_coords[i];
-
-      if (!target_coords_set.has(JSON.stringify(c))) {
-        return false;
-      }
-
-      if (solution_coords_set.has(JSON.stringify(c))) {
-        return false;
-      }
-      solution_coords_set.add(JSON.stringify(c));
-    }
-
-    //    console.log("Solution", solution_coords, target_coords_set, solution_coords_set);
-
+  const isValid = (solution, new_number) => {
+    const current_fields = solution.reduce((acc, v) => acc + v, 0);
+    if (current_fields & new_number) return false;
     return true;
   };
 
   const extend_solution = (solution) => {
-    if (solutions.length === 4) return;
+    // Early return, we have found enough solutions
+    // In total there are 14816 solutions.
+    if (solutions.length === 400000) return;
 
-    if (!isValid(solution)) {
-      return;
-    }
-
-    if (solution.length === pieces.length) {
+    if (solution.length === coords_by_piece_index.length) {
       solutions.push(solution);
       return;
     }
 
     const piece_index = solution.length;
-    const unique_coords = unique_coords_by_piece_index[piece_index];
+    const piece_coords = coords_by_piece_index[piece_index];
 
-    // We need to shift the piece to all possible positions
-
-    target_coords_sorted.forEach((target) => {
-      const shift = {
-        x: target.x,
-        y: target.y,
-        z: target.z,
-      };
-
-      unique_coords.forEach((coords, rot_idx) => {
-        extend_solution([...solution, { rot_idx, coords: shift }]);
-      });
-    });
+    for (let coords of piece_coords) {
+      if (isValid(solution, coords)) {
+        extend_solution([...solution, coords]);
+      }
+    }
   };
 
   extend_solution([]);
@@ -331,6 +285,14 @@ const solve = () => {
 };
 
 solve();
+
+state.solutions.forEach((solution) => {
+  console.log(
+    `${solution.length}, ${number_to_binary_string(
+      solution.reduce((acc, v) => acc + v, 0)
+    )}`
+  );
+});
 
 m.mount(document.getElementById("controls"), {
   view: (vnode) => [
@@ -354,11 +316,9 @@ m.mount(document.getElementById("controls"), {
           combi.pieces.map((pn, i) =>
             use(findPiece(pn), (piece) => [
               pre("PEACE", JSON.stringify(piece)),
-              //    pre(JSON.stringify(pieceToCoords(findPiece(pn)))),
               m(
                 containerC,
                 { size: "300px", angle },
-                //  m(cubicalC, { angle, size: '10px' }),
                 pieceToCoords(piece).map((c) =>
                   m(cubicalC, {
                     color: piece.color.toLowerCase(),
@@ -377,27 +337,6 @@ m.mount(document.getElementById("controls"), {
           ),
         ]),
 
-        false
-          ? m(
-              containerC,
-              { size: "300px", angle },
-              //  m(cubicalC, { angle, size: '10px' }),
-              mapToCoords(set.coords).map((c) =>
-                m(cubicalC, {
-                  color: "gray",
-                  title: "?",
-                  angle,
-                  size: "100px",
-                  transform: `
-                        translateX(${c.x * 100 + 10}px)
-                        translateY(${c.y * 100 + 10}px)
-                        translateZ(${c.z * 100 + 10}px)
-                    `,
-                })
-              )
-            )
-          : null,
-
         state.solutions.map((solution) => {
           return m(
             containerC,
@@ -406,29 +345,18 @@ m.mount(document.getElementById("controls"), {
             use(state.card, (card) =>
               use(selectSet(card, state.dice), (set) => [
                 use(selectCombi(set, state.dice), (combi) => {
-                  const unique_coords_by_piece_index =
-                    create_unique_coords_by_piece_index(combi);
                   return combi.pieces.map((pn, i) =>
                     i == state.selected_solution_piece ||
                     state.selected_solution_piece < 0
                       ? use(findPiece(pn), (piece) => [
-                          //                        pre("PEACE", JSON.stringify(piece)),
-                          //    pre(JSON.stringify(pieceToCoords(findPiece(pn)))),
-
-                          //  m(cubicalC, { angle, size: '10px' }),
-                          shift_coords(
-                            unique_coords_by_piece_index[i][
-                              solution[i].rot_idx
-                            ],
-                            solution[i].coords, state.expl / 100
-                          ).map((c) =>
+                          number_to_coords(solution[i]).map((c) =>
                             m(cubicalC, {
                               color: piece.color.toLowerCase(),
                               title: JSON.stringify(piece.id),
                               angle,
                               size: "100px",
                               transform: `
-                                              translateX(${c.x * 100  + 10}px)
+                                              translateX(${c.x * 100 + 10}px)
                                               translateY(${c.y * 100 + 10}px)
                                               translateZ(${c.z * 100 + 10}px)
                                           `,
@@ -449,17 +377,6 @@ m.mount(document.getElementById("controls"), {
           min: 0,
           onchange: (e) => console.log("U", (state.expl = +e.target.value)),
         }),
-        // div.field(
-        //   set.coords
-        //     ? set.coords.map((row) => [
-        //         div.row(
-        //           row
-        //             .split("")
-        //             .map((c) => (c === "#" ? div.box.filled() : div.box()))
-        //         ),
-        //       ])
-        //     : "NoCoords"
-        // ),
       ])
     ),
     input({
