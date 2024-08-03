@@ -35,6 +35,7 @@ const state = {
   dice: 1,
   expl: 100,
   selected_solution_piece: -1,
+  selected_solution: 0,
   solutions: [],
 };
 
@@ -162,13 +163,48 @@ let angle = 330;
 // For each piece rotate it in all directions, normalize it and only keep unique ones.
 
 const rotations = [
+  // Identity rotation
   (v) => v,
-  rotate_X,
-  rotate_Y,
-  rotate_Z,
+
+  // Rotations around the x-axis
+  (v) => rotate_X(v),
+  (v) => rotate_X(rotate_X(v)),
+  (v) => rotate_X(rotate_X(rotate_X(v))),
+
+  // Rotations around the y-axis
+  (v) => rotate_Y(v),
+  (v) => rotate_Y(rotate_Y(v)),
+  (v) => rotate_Y(rotate_Y(rotate_Y(v))),
+
+  // Rotations around the z-axis
+  (v) => rotate_Z(v),
+  (v) => rotate_Z(rotate_Z(v)),
+  (v) => rotate_Z(rotate_Z(rotate_Z(v))),
+
+  // Combinations of rotations
   (v) => rotate_X(rotate_Y(v)),
+  (v) => rotate_X(rotate_Y(rotate_Y(v))),
+  (v) => rotate_X(rotate_Y(rotate_Y(rotate_Y(v)))),
+
   (v) => rotate_X(rotate_Z(v)),
+  (v) => rotate_X(rotate_Z(rotate_Z(v))),
+  (v) => rotate_X(rotate_Z(rotate_Z(rotate_Z(v)))),
+
+  (v) => rotate_Y(rotate_X(v)),
+  (v) => rotate_Y(rotate_X(rotate_X(v))),
+  (v) => rotate_Y(rotate_X(rotate_X(rotate_X(v)))),
+
   (v) => rotate_Y(rotate_Z(v)),
+  (v) => rotate_Y(rotate_Z(rotate_Z(v))),
+  (v) => rotate_Y(rotate_Z(rotate_Z(rotate_Z(v)))),
+
+  (v) => rotate_Z(rotate_X(v)),
+  (v) => rotate_Z(rotate_X(rotate_X(v))),
+  (v) => rotate_Z(rotate_X(rotate_X(rotate_X(v)))),
+
+  (v) => rotate_Z(rotate_Y(v)),
+  (v) => rotate_Z(rotate_Y(rotate_Y(v))),
+  (v) => rotate_Z(rotate_Y(rotate_Y(rotate_Y(v)))),
 ];
 
 const idx_of_coords = (coords) => coords.x + coords.y * 3 + coords.z * 9;
@@ -336,40 +372,54 @@ m.mount(document.getElementById("controls"), {
             ])
           ),
         ]),
+        button({ onclick: (e) => state.selected_solution-- }, "--"),
+        button({ onclick: (e) => state.selected_solution++ }, "++"),
+    
+        div.grid(
+          state.solutions.map((solution, solution_idx) => {
+            if (
+              !(
+                solution_idx >= state.selected_solution &&
+                solution_idx < state.selected_solution + 7
+              )
+            ) {
+              return null;
+            }
+            return div.box(
+              m(
+                containerC,
+                { size: "300px", angle },
 
-        state.solutions.map((solution) => {
-          return m(
-            containerC,
-            { size: "300px", angle },
-
-            use(state.card, (card) =>
-              use(selectSet(card, state.dice), (set) => [
-                use(selectCombi(set, state.dice), (combi) => {
-                  return combi.pieces.map((pn, i) =>
-                    i == state.selected_solution_piece ||
-                    state.selected_solution_piece < 0
-                      ? use(findPiece(pn), (piece) => [
-                          number_to_coords(solution[i]).map((c) =>
-                            m(cubicalC, {
-                              color: piece.color.toLowerCase(),
-                              title: JSON.stringify(piece.id),
-                              angle,
-                              size: "100px",
-                              transform: `
+                use(state.card, (card) =>
+                  use(selectSet(card, state.dice), (set) => [
+                    use(selectCombi(set, state.dice), (combi) => {
+                      return combi.pieces.map((pn, i) =>
+                        i == state.selected_solution_piece ||
+                        state.selected_solution_piece < 0
+                          ? use(findPiece(pn), (piece) => [
+                              number_to_coords(solution[i]).map((c) =>
+                                m(cubicalC, {
+                                  color: piece.color.toLowerCase(),
+                                  title: JSON.stringify(piece.id),
+                                  angle,
+                                  size: "100px",
+                                  transform: `
                                               translateX(${c.x * 100 + 10}px)
                                               translateY(${c.y * 100 + 10}px)
                                               translateZ(${c.z * 100 + 10}px)
                                           `,
-                            })
-                          ),
-                        ])
-                      : null
-                  );
-                }),
-              ])
-            )
-          );
-        }),
+                                })
+                              ),
+                            ])
+                          : null
+                      );
+                    }),
+                  ])
+                )
+              )
+            );
+          })
+        ),
         input({
           type: "range",
           value: state.expl,

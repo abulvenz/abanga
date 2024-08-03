@@ -1,151 +1,154 @@
 body {
-    background-color: black;
-    color: white;
+  background-color: black;
+  color: white;
 }
 
 canvas {
-    height: 0px;
+  height: 0px;
 }
 
 .gray {
-    background-color: rgba(128, 128, 128, 0.259);
+  background-color: rgba(128, 128, 128, 0.259);
 }
 
 .pink {
-    background-color: pink;
+  background-color: pink;
 }
 
 .red {
-    background-color: red;
+  background-color: red;
 }
 
 .green {
-    background-color: green;
+  background-color: green;
 }
 
 .blue {
-    background-color: blue;
+  background-color: blue;
 }
-
 
 .yellow {
-    background-color: yellow;
+  background-color: yellow;
 }
 .middlebrown {
-    background-color: rgb(91, 42, 7);
+  background-color: rgb(91, 42, 7);
 }
 
 .salmon {
-    background-color: salmon;
+  background-color: salmon;
 }
 
 .redbrown {
-    background-color: saddlebrown;
+  background-color: saddlebrown;
 }
 
 .orange {
-    background-color: orange;
+  background-color: orange;
 }
 
 .blanchedalmond {
-    background-color: blanchedalmond;
+  background-color: blanchedalmond;
 }
 
 .purple {
-    background-color: rgb(128, 0, 55);
+  background-color: rgb(128, 0, 55);
 }
 
 .sandybrown {
-    background-color: sandybrown;
+  background-color: sandybrown;
 }
 
 .darkbrown {
-    background-color: rgb(47, 30, 19);
+  background-color: rgb(47, 30, 19);
 }
 
 .container {
-    width: var(--size);
-    height: var(--size);
-    perspective: 500px;
-    margin: 100px;
-    border: 1px solid saddlebrown
+  width: var(--size);
+  height: var(--size);
+  perspective: 500px;
+  margin: 100px;
+  border: 1px solid saddlebrown;
 }
 
 .inner-container {
-    transform: var(--transform);
-    transform-style: preserve-3d;
+  transform: var(--transform);
+  transform-style: preserve-3d;
 }
 
 .cube {
-    transform: var(--transform);
-    position: absolute;
-    width: var(--size);
-    height: var(--size);
-    transform-style: preserve-3d;
+  transform: var(--transform);
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  transform-style: preserve-3d;
 }
 
-
 .face {
-    backface-visibility: hidden;
-    width: var(--size);
-    height: var(--size);
-    border: 0px solid black;
-    position: absolute;
-    color: black;
-    opacity: 1.5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: Arial, sans-serif;
-    font-size: 3.5em;
-    border-radius: calc(var(--size)*0.02);
+  backface-visibility: hidden;
+  width: var(--size);
+  height: var(--size);
+  border: 0px solid black;
+  position: absolute;
+  color: black;
+  opacity: 1.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, sans-serif;
+  font-size: 3.5em;
+  border-radius: calc(var(--size) * 0.02);
 }
 
 .front {
-    transform: translateZ(calc(var(--size)/2));
-    filter: brightness(100%);
+  transform: translateZ(calc(var(--size) / 2));
+  filter: brightness(100%);
 }
 
 .back {
-    transform: translateZ(calc(-1*var(--size)/2)) rotateY(180deg);
-    filter: brightness(10%);
+  transform: translateZ(calc(-1 * var(--size) / 2)) rotateY(180deg);
+  filter: brightness(10%);
 }
 
-
 .left {
-    transform: translateX(calc(-1*var(--size)/2)) rotateY(-90deg);
-    filter: brightness(10%);
+  transform: translateX(calc(-1 * var(--size) / 2)) rotateY(-90deg);
+  filter: brightness(10%);
 }
 
 .right {
-    transform: translateX(calc(var(--size)/2)) rotateY(90deg);
-    filter: brightness(20%);
+  transform: translateX(calc(var(--size) / 2)) rotateY(90deg);
+  filter: brightness(20%);
 }
 
 .top {
-    transform: translateY(calc(-1*var(--size)/2)) rotateX(90deg);
-    filter: brightness(50%);
+  transform: translateY(calc(-1 * var(--size) / 2)) rotateX(90deg);
+  filter: brightness(50%);
 }
 
 .bottom {
-    transform: translateY(calc(var(--size)/2)) rotateX(-90deg);
+  transform: translateY(calc(var(--size) / 2)) rotateX(-90deg);
 }
 
 .field {
-    display: grid;
-    grid-template-rows: repeat(5, 10vw);
-    grid-template-columns: repeat(5, 10vw);
+  display: grid;
+  grid-template-rows: repeat(5, 10vw);
+  grid-template-columns: repeat(5, 10vw);
+}
+
+.grid {
+  display: grid;
+  grid-template-rows: repeat(7, 10vw);
+  grid-template-columns: repeat(7, 10vw);
+  gap: 3vw;
 }
 
 .box {
-    background-color: black;
-    width: 10vw;
-    height: 10vw;
-    border-radius: 1vw;
-    border: 1px solid darkblue;
+  background-color: black;
+  width: 10vw;
+  height: 10vw;
+  border-radius: 1vw;
+  border: 1px solid darkblue;
 }
 
 .filled {
-    background-color: lightblue;
-
+  background-color: lightblue;
 }
