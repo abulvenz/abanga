@@ -35,8 +35,16 @@ canvas {
     background-color: rgb(91, 42, 7);
 }
 
+.salmon {
+    background-color: salmon;
+}
+
 .redbrown {
     background-color: saddlebrown;
+}
+
+.orange {
+    background-color: orange;
 }
 
 .blanchedalmond {

@@ -34,7 +34,7 @@ const state = {
   card: cards[0],
   dice: 1,
   expl: 100,
-  selected_solution_piece: 0,
+  selected_solution_piece: -1,
   solutions: [],
 };
 

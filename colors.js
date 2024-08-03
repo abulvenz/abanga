@@ -10,4 +10,6 @@ export default Object.freeze({
     REDBROWN: 'REDBROWN',
     SANDYBROWN: 'SANDYBROWN',
     BLANCHEDALMOND: 'BLANCHEDALMOND',
+    SALMON: 'SALMON',
+    ORANGE: 'ORANGE',
 });

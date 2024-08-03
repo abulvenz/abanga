@@ -77,7 +77,7 @@ export const pieces = [
   {
     id: 10,
     num: 2,
-    color: colors.BLANCHEDALMOND,
+    color: colors.ORANGE,
     coords: [
       ["##", " #"],
       ["# ", "  "],
@@ -120,7 +120,7 @@ export const pieces = [
   {
     id: 15,
     num: 3,
-    color: colors.MIDDLEBROWN,
+    color: colors.SALMON,
     coords: [[" #", "##", " #"]],
   },
   {
