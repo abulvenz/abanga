@@ -242,10 +242,10 @@ const boundingBox = (coords) =>
     { min: { x: 100, y: 100, z: 100 }, max: { x: 0, y: 0, z: 0 } }
   );
 
-const piece_to_numbers = (coords) => {
+const piece_to_numbers = (coords, idx) => {
   const unique_coords = new Set();
 
-  rotations.forEach((rotation) => {
+  (idx !== 6 ? rotations : [(e) => e]).forEach((rotation) => {
     const rotated_coords = normalize_coords(coords.map(rotation));
     const bounding_box = boundingBox(rotated_coords);
 
@@ -261,20 +261,22 @@ const piece_to_numbers = (coords) => {
       }
     }
   });
-  return Array.from(unique_coords).map((c) => c);
+  const result = Array.from(unique_coords).map((c) => c);
+  result.sort();
+  return result;
 };
 
 const create_unique_coords_by_piece_index = (combi) => {
   const pieces = combi.pieces.map((pn) => findPiece(pn));
 
-  return pieces.map((piece) => {
+  return pieces.map((piece, idx) => {
     const coords = pieceToCoords(piece);
 
-    return piece_to_numbers(coords);
+    return piece_to_numbers(coords, idx);
   });
 };
 const solve = () => {
-  console.log("Solve");
+  console.log("Solve", pow(2, 27));
 
   const card = state.card;
   const set = selectSet(card, state.dice);
@@ -297,7 +299,7 @@ const solve = () => {
   const extend_solution = (solution) => {
     // Early return, we have found enough solutions
     // In total there are 14816 solutions.
-    if (solutions.length === 400000) return;
+    if (solutions.length === 40000) return;
 
     if (solution.length === coords_by_piece_index.length) {
       solutions.push(solution);
@@ -321,6 +323,7 @@ const solve = () => {
 };
 
 solve();
+console.log(`Non-symmetric ? ${state.solutions.length / 24}`);
 
 state.solutions.forEach((solution) => {
   console.log(
@@ -374,7 +377,7 @@ m.mount(document.getElementById("controls"), {
         ]),
         button({ onclick: (e) => state.selected_solution-- }, "--"),
         button({ onclick: (e) => state.selected_solution++ }, "++"),
-    
+
         div.grid(
           state.solutions.map((solution, solution_idx) => {
             if (
@@ -402,11 +405,11 @@ m.mount(document.getElementById("controls"), {
                                   color: piece.color.toLowerCase(),
                                   title: JSON.stringify(piece.id),
                                   angle,
-                                  size: "100px",
+                                  size: "70px",
                                   transform: `
-                                              translateX(${c.x * 100 + 10}px)
-                                              translateY(${c.y * 100 + 10}px)
-                                              translateZ(${c.z * 100 + 10}px)
+                                              translateX(${c.x * 70 + 10}px)
+                                              translateY(${c.y * 70 + 10}px)
+                                              translateZ(${c.z * 70 + 10}px)
                                           `,
                                 })
                               ),
