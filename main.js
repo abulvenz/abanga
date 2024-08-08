@@ -249,9 +249,9 @@ const piece_to_numbers = (coords, idx) => {
     const rotated_coords = normalize_coords(coords.map(rotation));
     const bounding_box = boundingBox(rotated_coords);
 
-    for (x in range(3 - bounding_box.max.x)) {
-      for (y in range(3 - bounding_box.max.y)) {
-        for (z in range(3 - bounding_box.max.z)) {
+    for (let x in range(3 - bounding_box.max.x)) {
+      for (let y in range(3 - bounding_box.max.y)) {
+        for (let z in range(3 - bounding_box.max.z)) {
           const shift = { x, y, z };
           const shifted_coords = shift_coords(rotated_coords, shift);
           const num = numberify(sort_coords(shifted_coords));
